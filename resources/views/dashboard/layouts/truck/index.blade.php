@@ -1,41 +1,55 @@
 @extends('dashboard/layouts.main')
 @section('content')
-    <div class="span12">
-        <div class="widget-box">
-            <div class="widget-title">
-                <span class="icon"><i class="icon-th"></i></span>
-               
-                    @auth
+    <div class="container-fluid">
+
+        <!-- Page Heading -->
+        <h1 class="h3 mb-2 text-gray-800">Trucks</h1>
+        <p class="mb-4">Manage your truck inventory.</p>
+
+        <!-- DataTales Example -->
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Truck List</h6>
+                @auth
                     @if (Auth::user()->hasRole('super-admin'))
-                        <a href="{{ route('truck.create') }}">
-                            <h5><i class="icon-plus"></i> Add Truck</h5>
-                        </a>
+                        <a href="{{ route('truck.create') }}" class="btn btn-primary btn-sm float-right"><i
+                                class="fas fa-plus"></i> Add Truck</a>
                     @endif
                 @endauth
             </div>
-            <div class="widget-content nopadding">
-                <table class="table table-bordered data-table">
-                    <thead>
-                        <tr>
-                            <th>S/N</th>
-                            <th>Number</th>
-                            <th>Type</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($truck as $item)
-                            <tr class="gradeX">
-                                <td>{{ $loop->iteration }}</td>
-                                <td>{{ $item->number }}</td>
-                                <td>{{ $item->type }}</td>
-                                <td><i class="icon-trash"></i></td>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>S/N</th>
+                                <th>Number</th>
+                                <th>Type</th>
+                                <th>Action</th>
                             </tr>
-                        @endforeach
-
-                    </tbody>
-                </table>
+                        </thead>
+                      
+                        <tbody>
+                            @foreach ($truck as $item)
+                                <tr>
+                                    <td>{{ $loop->iteration }}</td>
+                                    <td>{{ $item->number }}</td>
+                                    <td>{{ $item->type }}</td>
+                                    <td>
+                                        <form action="{{ route('truck.delete', $item->id) }}" method="POST">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-danger btn-sm"><i
+                                                    class="fas fa-trash"></i> Delete</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
+
     </div>
 @endsection

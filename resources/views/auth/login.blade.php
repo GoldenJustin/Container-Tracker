@@ -1,69 +1,70 @@
 @extends('dashboard.layouts.main')
-@section('style-login')
-    <link rel="stylesheet" href="{{ asset('assets/css/maruti-login.css') }}" />
-@endsection
+
 @section('content')
-
-
-    <div id="loginbox">
-        <form id="loginform" class="form-vertical" action="{{ route('login') }}" method="POST">
-            @csrf
-
-            <div class="control-group normal_text">
-                <h3><img src="{{ asset('assets/img/login-logo.png')}}" alt="Logo" /></h3>
-            </div>
-
-            <div class="control-group">
-                <div class="controls">
-                    <div class="main_input_box">
-                        <span class="add-on"><i class="icon-user"></i></span>
-                        <x-text-input id="email" class="block mt-1 w-full" type="email" name="email"
-                            :value="old('email')" required autofocus autocomplete="username" />
-                        <x-input-error :messages="$errors->get('email')" class="mt-2" />
+<div class="container">
+    <!-- Outer Row -->
+    <div class="row justify-content-center">
+        <div class="col-xl-10 col-lg-12 col-md-9">
+            <div class="card o-hidden border-0 shadow-lg my-5">
+                <div class="card-body p-0">
+                    <!-- Nested Row within Card Body -->
+                    <div class="row">
+                        <div class="col-lg-6 d-none d-lg-block bg-login-image"></div>
+                        <div class="col-lg-6">
+                            <div class="p-5">
+                                <div class="text-center">
+                                    <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
+                                </div>
+                                <form class="user" action="{{ route('login') }}" method="POST">
+                                    @csrf
+                                    <div class="form-group">
+                                        <input type="email" class="form-control form-control-user"
+                                            id="email" name="email" aria-describedby="emailHelp"
+                                            placeholder="Enter Email Address..." value="{{ old('email') }}" required autofocus autocomplete="username">
+                                        @if($errors->has('email'))
+                                            <span class="text-danger">{{ $errors->first('email') }}</span>
+                                        @endif
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="password" class="form-control form-control-user"
+                                            id="password" name="password" placeholder="Password" required autocomplete="current-password">
+                                        @if($errors->has('password'))
+                                            <span class="text-danger">{{ $errors->first('password') }}</span>
+                                        @endif
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="custom-control custom-checkbox small">
+                                            <input type="checkbox" class="custom-control-input" id="customCheck" name="remember">
+                                            <label class="custom-control-label" for="customCheck">Remember Me</label>
+                                        </div>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary btn-user btn-block">
+                                        Login
+                                    </button>
+                                    <hr>
+                                    {{-- <a href="{{ route('login.provider', 'google') }}" class="btn btn-google btn-user btn-block">
+                                        <i class="fab fa-google fa-fw"></i> Login with Google
+                                    </a>
+                                    <a href="{{ route('login.provider', 'facebook') }}" class="btn btn-facebook btn-user btn-block">
+                                        <i class="fab fa-facebook-f fa-fw"></i> Login with Facebook
+                                    </a> --}}
+                                </form>
+                                <hr>
+                                <div class="text-center">
+                                    @if (Route::has('password.request'))
+                                        <a class="small" href="{{ route('password.request') }}">Forgot Password?</a>
+                                    @endif
+                                </div>
+                                <div class="text-center">
+                                    <a class="small" href="{{ route('register') }}">Create an Account!</a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-
-            <div class="control-group">
-                <div class="controls">
-                    <div class="main_input_box">
-                        <span class="add-on"><i class="icon-lock"></i></span>
-                        <x-text-input id="password" class="block mt-1 w-full" type="password" name="password" required
-                            autocomplete="current-password" />
-                        <x-input-error :messages="$errors->get('password')" class="mt-2" />
-                        <span class="show-password"><i class="icon-eye-open"></i></span>
-                        
-                    </div>
-                   
-                </div>
-                
-            </div>
-            
-
-           
-
-            <div class="form-actions">
-                <span class="pull-left">
-                    @if (Route::has('password.request'))
-                        <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                            href="{{ route('password.request') }}">
-                            {{ __('Forgot your password?') }}
-                        </a>
-                    @endif
-
-                </span>
-
-                <span class="pull-right"><x-primary-button class="ms-3">{{ __('Log in') }}</x-primary-button></span>
-            </div>
-
-          
-
-        </form>
-
-     
+        </div>
     </div>
+</div>
 
-@section('script-login')
-    <script src="{{ asset('assets/js/maruti.login.js') }}"></script>
-@endsection
 @endsection

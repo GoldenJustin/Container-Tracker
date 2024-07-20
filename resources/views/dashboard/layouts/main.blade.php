@@ -2,147 +2,103 @@
 <html lang="en">
 
 <head>
-    <title>Container Tracker</title>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}" />
-    <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-responsive.min.css') }}" />
-    <link rel="stylesheet" href="{{ asset('assets/css/fullcalendar.css') }}" />
-    <link rel="stylesheet" href="{{ asset('assets/css/maruti-style.css') }}" />
-    <link rel="stylesheet" href="{{ asset('assets/css/maruti-media.css') }}" class="skin-color" />
-    @yield('style-login')
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>NIT Container Tracking</title>
+
+    <!-- Custom fonts for this template-->
+    <link href="{{ asset('assets/vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css">
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link href="{{ asset('assets/css/sb-admin-2.min.css') }}" rel="stylesheet">
+
 </head>
 
-<body>
+<body id="page-top">
+
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+
+        @auth
+            @include('dashboard.layouts.components.sidebar')
+        @endauth
+
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+            <!-- Main Content -->
+            <div id="content">
+
+                @include('dashboard.layouts.components.topbar')
+
+
+                @yield('content')
+
+            </div>
+            <!-- End of Main Content -->
 
 
 
+            @include('dashboard.layouts.components.footer')
 
-    @auth
-        <!--Header-part-->
-        <div id="header">
-            <h1><a href="dashboard.html">Container Tracker</a></h1>
         </div>
-        <!--close-Header-part-->
-        <div id="user-nav" class="navbar navbar-inverse">
-            <ul class="nav">
-                <li class=""><a><i class="icon icon-user"></i> <span
-                            class="text">{{ Auth::user()->name }}</span></a></li>
-                <li class="">
-                    <a href="{{ route('logout') }}"
-                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                        <i class="icon icon-share"></i>
-                        <span>{{ __('Log Out') }}</span>
-                    </a>
-                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                        @csrf
-                    </form>
-                </li>
+        <!-- End of Content Wrapper -->
 
+    </div>
+    <!-- End of Page Wrapper -->
 
-            </ul>
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+
+    <!-- Logout Modal-->
+    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                <a class="btn btn-primary" href="#" id="logoutButton">
+                    Logout
+                </a>
+            </div>
         </div>
-
-        <div id="sidebar"><a href="{{ URL::TO('dashboard') }}" class="visible-phone"><i class="icon icon-home"></i>
-                Home</a>
-            <ul>
-                <li class="active"><a href="{{ URL::TO('dashboard') }}"><i class="icon icon-home"></i>
-                        <span>Home</span></a> </li>
-                <li> <a href="{{ route('container.index') }}"><i class="icon icon-signal"></i> <span>Containers</span></a>
-                </li>
-                <li> <a href="{{ route('driver.index') }}"><i class="icon icon-inbox"></i> <span>Driver</span></a> </li>
-
-
-                <li> <a href="{{ route('truck.index') }}"><i class="icon icon-hdd"></i> <span>Truck</span></a></li>
-                @auth
-                    @if (Auth::user()->hasRole('super-admin'))
-                        <li> <a href="{{ route('icd.index') }}"><i class="icon icon-tasks"></i> <span>ICD</span></a></li>
-                        <li> <a href="{{ URL::TO('users') }}"><i class="icon icon-user"></i> <span>Users</span></a></li>
-                    @endif
-                @endauth
-
-                @auth
-                    @if (Auth::user()->hasRole('super-admin|terminal'))
-                        <li><a href="{{ route('allocate.index') }}"><i class="icon icon-fullscreen"></i> <span>Container to
-                                    ICD</span></a></li>
-                    @endif
-                @endauth
-                @auth
-                    @if (Auth::user()->hasRole('icd'))
-                        <li><a href="{{ route('allocated.index') }}"><i class="icon icon-fullscreen"></i> <span>Allocated
-                                    Containers</span></a></li>
-                        <li><a href="{{ route('delivery.index') }}"><i class="icon icon-road"></i> <span>Delivery Orders</span></a></li>
-                        <li><a href="{{ route('allocated.index') }}"><i class="icon icon-bell"></i> <span>Notify Customers</span></a></li>
-
-                    @endif
-                @endauth
-
-
-
-
-
-
-
-
-
-            </ul>
-        </div>
-    @endauth
-    <div id="content">
-        <div id="content-header">
-            <br>
-            
-        </div>
-
-        @yield('content')
-
     </div>
-    </div>
-    </div>
-    </div>
-
-    <div class="row-fluid">
-        <div id="footer" class="span12"> 2012 &copy; National Institute of Transport. Brought to you by <a
-                href="#">NIT</a> </div>
-    </div>
-    @yield('script-login')
-    <script src="{{ asset('assets/js/excanvas.min.js') }}"></script>
-    <script src="{{ asset('assets/js/jquery.min.js') }}"></script>
-    <script src="{{ asset('assets/js/jquery.ui.custom.js') }}"></script>
-    <script src="{{ asset('assets/js/bootstrap.min.js') }}"></script>
-    <script src="{{ asset('assets/js/jquery.flot.min.js') }}"></script>
-    <script src="{{ asset('assets/js/jquery.flot.resize.min.js') }}"></script>
-    <script src="{{ asset('assets/js/jquery.peity.min.js') }}"></script>
-    <script src="{{ asset('assets/js/fullcalendar.min.js') }}"></script>
-    <script src="{{ asset('assets/js/maruti.js') }}"></script>
-    <script src="{{ asset('assets/js/maruti.dashboard.js') }}"></script>
-    <script src="{{ asset('assets/js/maruti.chat.js') }}"></script>
+</div>
 
 
-    <script type="text/javascript">
-        // This function is called from the pop-up menus to transfer to
-        // a different page. Ignore if the value returned is a null string:
-        function goPage(newURL) {
+    <!-- Bootstrap core JavaScript-->
+    <script src="{{ asset('assets/vendor/jquery/jquery.min.js') }}"></script>
+    <script src="{{ asset('assets/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 
-            // if url is empty, skip the menu dividers and reset the menu selection to default
-            if (newURL != "") {
+    <!-- Core plugin JavaScript-->
+    <script src="{{ asset('assets/vendor/jquery-easing/jquery.easing.min.js') }}"></script>
 
-                // if url is "-", it is this page -- reset the menu:
-                if (newURL == "-") {
-                    resetMenu();
-                }
-                // else, send page to designated URL            
-                else {
-                    document.location.href = newURL;
-                }
-            }
-        }
+    <!-- Custom scripts for all pages-->
+    <script src="{{ asset('assets/js/sb-admin-2.min.js') }}"></script>
 
-        // resets the menu selection upon entry to this page:
-        function resetMenu() {
-            document.gomenu.selector.selectedIndex = 2;
-        }
-    </script>
+    <!-- Page level plugins -->
+    <script src="{{ asset('assets/vendor/chart.js/Chart.min.js') }}"></script>
+
+    <!-- Page level custom scripts -->
+    <script src="{{ asset('assets/js/demo/chart-area-demo.js') }}"></script>
+    <script src="{{ asset('assets/js/demo/chart-pie-demo.js') }}"></script>
+
 </body>
 
 </html>
